@@ -1,0 +1,32 @@
+.track-listing {
+	letter-spacing: -.25px;
+
+	thead {
+		@extend .darker;
+		font-size: 16px;
+	}
+
+	tr{
+		td:nth-child(1), td:nth-child(2), td:nth-child(3) {
+			width: 50px;
+		}
+		td:nth-child(7) {
+			width: 25%;
+		}
+		td {
+			&.cell-title {
+				line-height: 18px;
+			}
+		}
+	}
+
+	tbody {
+		tr{
+			&.playing, &:hover {
+				td {
+					background: #fff;
+				}
+			}
+		}
+	}
+}
