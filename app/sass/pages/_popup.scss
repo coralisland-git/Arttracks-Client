@@ -1,0 +1,310 @@
+.modal-wrapper {
+  z-index: 99;
+
+  &.project-loading {
+    .modal-body {
+      img.loading {
+
+      }
+      p {
+        margin-top: 20px;
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+.loading {
+    border-radius: 50%;
+    width: $circular-loader-size;
+    height: $circular-loader-size;
+    border: .3rem solid $brand-primary-darker;
+    border-top-color: $brand-primary;
+    animation: spin $spin-duration infinite linear;
+		display: inline-block;
+		margin-bottom: 30px;
+}
+
+.template-layout {
+  .layout-thumbnail {
+    display: inline-block;
+    background-color: $brand-primary-darker;
+    /*border: #646DA0 solid 2px;*/
+    margin-bottom: 25px;
+
+    &__horizontal {
+        width: 309px;
+        height: 174px;
+    }
+
+    &__vertical {
+        width: 174px;
+        height: 309px;
+    }
+
+    &__square {
+        width: 238px;
+        height: 238px;
+    }
+  }
+
+  .layout-thumbnail:hover {
+    /*border: $brand-primary solid 2px;*/
+  }
+
+  .layout-description {
+    display: inline-block;
+    color: $brand-primary-light;
+    width: 70%;
+  }
+
+  .btn {
+    width: 200px;
+    height: 50px;
+    border-color: $brand-primary;
+    font-weight: 300 !important;
+    font-size: 14px;
+    background: none;
+    margin-bottom: 24px;
+  }
+
+  .btn:hover {
+    background-color: $brand-primary;
+    border-color: $brand-primary;
+  }
+
+  h4 {
+    margin-bottom: 20px;
+  }
+}
+
+.modal-dialog {
+  .btn-cancel {
+    background: white;
+    color: $primary-color;
+    margin-right: 10px;
+    &:hover {
+      color: white;
+      background: #ced0d2;
+    }
+  }
+
+  .btn-primary.btn-hollow {
+    color: $brand-primary;
+    border-color: $brand-primary;
+    &:hover {
+      color: white;
+    }
+  }
+
+  .btn-wider {
+    padding: 10px 35px !important;
+    font-size: 13px;
+  }
+
+  .close {
+    font-size: 32px;
+  }
+}
+
+.pub-account-popup {
+  .modal-dialog {
+    width: 540px;
+  }
+
+  .modal-body {
+    background: #f5f5f5;
+    text-align: center;
+    padding-top: 25px;
+
+    .no-account {
+      margin: 0 auto;
+      text-align: center;
+      padding: 10px 0 20px;
+      width: 240px;
+
+      &.scheduled {
+        width: 290px;
+      }
+
+      p {
+        margin-top: 5px;
+      }
+
+      .actions {
+        padding: 15px 0;
+      }
+    }
+  }
+
+  .connected-accounts {
+    li {
+      display: inline-block;
+      vertical-align:top;
+      text-align: center;
+      width: 140px;
+      margin-bottom: 10px;
+      text-align: center;
+
+      .avatar {
+        width: 88px;
+        height: 88px;
+        margin: 10px auto;
+        cursor: pointer;
+      }
+
+      &.add-account {
+        margin-top: 10px;
+        p {
+          margin-top: 5px;
+        }
+      }
+
+      &.connected-account.selected {
+        .avatar {
+          .overlay {
+            position: absolute;
+            background-color: rgba(11, 188, 239, .5);
+            border: solid 3px $brand-primary;
+            border-radius: 70px;
+            width: 88px;
+            height: 88px;
+            padding-top: calc(50% - 14px);
+            top: 0;
+          }
+        }
+      }
+
+      &.add-account {
+        a {
+          color: $primary-color;
+          text-decoration: none;
+
+          &:hover {
+            img {
+              background-color: $brand-primary;
+            }
+          }
+        }
+        img {
+          border-radius: 88px;
+          margin: 10px auto;
+        }
+      }
+    }
+  }
+}
+
+.pub-preview-popup {
+  .modal-dialog {
+    width: 900px;
+  }
+
+  .modal-body {
+    padding: 0px;
+    background: #f5f5f5;
+
+    &>.row {
+      margin: 0px;
+    }
+
+    .bg-grey.col-sm-5 {
+      width: 40%;
+      padding: 20px;
+
+      .preview {
+        background: white;
+        border: 1px solid #e5e5e5;
+        margin-bottom: 20px;
+
+        video {
+          width: 100%;
+        }
+        .video-info {
+          text-align: center;
+          padding: 15px 0;
+          p {
+            margin-bottom: 4px;
+            &.title {
+              color: #666666;
+            }
+          }
+        }
+      }
+      .account {
+        .avatar {
+          position: relative;
+          width: 48px;
+          height: 48px;
+          > img {
+            width: 100%;
+            border: solid 2px #CCCCCC;
+            border-radius: 70px;
+          }
+          .provider-icon {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 25px;
+            height: 25px;
+            > img {
+              width: 100%;
+            }
+          }
+        }
+        p {
+          margin-bottom: 2px;
+        }
+      }
+    }
+
+    .metadata.col-sm-7 {
+      width: 60%;
+      padding: 20px;
+      background: white;
+      border-left: 1px solid #e5e5e5;
+
+      form {
+        padding: 5px;
+        label {
+          font-size: 14px;
+          margin-bottom: 2px;
+        }
+        textarea.form-control {
+          line-height: 1.4;
+        }
+        select.form-control, .radio label {
+          color: #444;
+        }
+        .radio label input[type="radio"] {
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}
+
+.coupon-popup {
+  .modal-dialog {
+    width: 540px;
+    margin-top: 120px;
+
+    .modal-content {
+      .modal-body {
+        background: #f5f5f5;
+        border-radius: 0 0 6px 6px;
+
+        form {
+          input[type=text] {
+            height: 60px;
+            text-align: center;
+            font-size: 27px !important;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #373D6A !important;
+          }
+        }
+      }
+    }
+  }
+}
