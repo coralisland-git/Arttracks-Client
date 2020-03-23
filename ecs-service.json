@@ -1,0 +1,14 @@
+{
+    "cluster": "arttracks-client-cluster",
+    "serviceName": "arttracks-client-service",
+    "taskDefinition": "arttracks-client-service",
+    "loadBalancers": [
+        {
+            "targetGroupArn": "arn:aws:elasticloadbalancing:eu-west-2:244157784000:targetgroup/arttracks-client-target-group/a5a0f047c845fcbb",
+            "containerName": "arttracks-client-service",
+            "containerPort": 8080
+        }
+    ],
+    "desiredCount": 1,
+    "role": "ecsServiceRole"
+}
