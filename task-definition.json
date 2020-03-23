@@ -1,0 +1,21 @@
+{
+    "family": "arttracks-client-service",
+    "containerDefinitions": [
+        {
+            "name": "arttracks-client-service",
+            "image": "244157784000.dkr.ecr.us-east-2.amazonaws.com/arttracks-client:latest",
+            "cpu": 128,
+            "memoryReservation": 128,
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "protocol": "tcp"
+                }
+            ],
+            "command": [
+                "npm run dev"
+            ],
+            "essential": true
+        }
+    ]
+}
