@@ -21541,8 +21541,8 @@ require('source-map-support').install({environment: 'node'});
 	 * Created by jarosanger on 8/15/16.
 	 */var configs={SERVER_URL:process.env.SERVER_URL||'//localhost:8080/',//SERVER_URL: process.env.SERVER_URL || '//arttracks-client-staging.herokuapp.com/',
 	//SERVER_URL: process.env.SERVER_URL || '//beta.arttracks.com/',
-	BASE_API_URL:process.env.BASE_API_URL||'//localhost:8000/api/v1/',//BASE_API_URL: process.env.BASE_API_URL || '//zerostate.arttracks.com/api/v1/',
-	//BASE_API_URL: process.env.BASE_API_URL || '//api.arttracks.com/api/v1/',
+	// BASE_API_URL: process.env.BASE_API_URL || '//localhost:8000/api/v1/',
+	BASE_API_URL:process.env.BASE_API_URL||'//zerostate.arttracks.com/api/v1/',//BASE_API_URL: process.env.BASE_API_URL || '//api.arttracks.com/api/v1/',
 	BASE_TAP_URL:process.env.BASE_TAP_URL||'https://api.tapfiliate.com/1.6/',TAP_API_KEY:process.env.BASE_TAP_URL||'64de82909827d670dd2827522f8475be591b9ff3',VIDEO_PAGE_LIMIT:process.env.VIDEO_PAGE_LIMIT||8,MAX_VERIFY_COUNT:6,CREDITS:[{count:5,price:1.00,discount:0},{count:10,price:1.00,discount:0},{count:20,price:1.00,discount:0},{count:50,price:0.94,discount:5},{count:100,price:0.90,discount:10},{count:200,price:0.85,discount:15}],TIMES_COST_STANDARD:0.02,TIMES_COST_MULTIPLIER:0.05,TIMES_COST_DISCOUNT_FACTOR:0.85,TIMES_COST_LOWEST_DISCOUNT:0.005,AWS_BUCKET:process.env.AWS_BUCKET||"mp3vidi",//FILEPICKER_KEY: process.env.FILEPICKER_KEY || "A3wr3EiC8RUKJhe0FwIGfz",
 	FILEPICKER_KEY:process.env.FILEPICKER_KEY||"AidoxNXaKRz6t2sExlQdgz",SC_CLIENT_ID:process.env.SC_CLIENT_ID||'976050d0c602302a5c06cbd80a4e1f59',SC_CLIENT_SECRET:process.env.SC_CLIENT_SECRET||'4ab65b2f0b5a4660061b35a0a24a7f13',SC_REDIRECT_URI:process.env.SC_REDIRECT_URI||'http://ec2-54-211-100-215.compute-1.amazonaws.com/soundcloud/login',FACEBOOK_APPID:process.env.FACEBOOK_APPID||"1350563344977653",FACEBOOK_API_SECRET:process.env.FACEBOOK_API_SECRET||'5d78b4850c7896379c9d7d8139866dc6',// FACEBOOK_APPID: "304392329723012",
 	// FACEBOOK_API_SECRET: '6dd18f57252a9a592fc901e7b5838704',

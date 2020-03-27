@@ -4,45 +4,22 @@ orbs:
   aws-ecr: circleci/aws-ecr@6.2.0
   aws-ecs: circleci/aws-ecs@0.0.11
 
-jobs:
-  run_tests:
-    working_directory: ~/app
-    docker:
-      - image: circleci/node:8.8.1
-    steps:
-      - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: npm-install
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: test
-          command: npm test
-
 workflows:
   build_and_push_image:
     jobs:
       - aws-ecr/build-and-push-image:
           account-url: 244157784000.dkr.ecr.us-east-2.amazonaws.com
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-access-key-id: AKIATRWHQD7APEUKBYOP
+          aws-secret-access-key: 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
           create-repo: true
           dockerfile: Dockerfile
           region: us-east-2
           repo: arttracks-client
-          tag: "$CIRCLE_SHA1"
+          tag: latest
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
-          aws-region: AWS_DEFAULT_REGION
-          family: arttracks-client-service
-          cluster-name: arttracks-client-cluster
-          container-image-name-updates: container=arttracks-client-service,tag=${CIRCLE_SHA1}
+          aws-region: us-east-2
+          family: arttracks-client-sv1
+          cluster-name: arttracks-client-cls
+          container-image-name-updates: container=arttracks-client-sv1,tag=latest

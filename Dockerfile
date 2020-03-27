@@ -9,6 +9,8 @@ COPY . /app
 
 WORKDIR /app/app
 RUN npm install
+RUN npm install --global bower
+RUN bower install --allow-root
 
 EXPOSE 8080
 EXPOSE 8079
@@ -16,6 +18,6 @@ EXPOSE 8079
 ENTRYPOINT ["npm"]
 
 #CMD ["run", "start"]
-CMD ["run", "dev", "-s"]
+CMD ["run", "prod", "-s"]
 
 
