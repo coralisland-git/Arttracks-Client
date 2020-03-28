@@ -15,13 +15,6 @@ workflows:
           region: us-east-2
           repo: arttracks-client
           tag: latest
-      - aws-ecs/deploy-service-update:
-          requires:
-            - aws-ecr/build-and-push-image
-          aws-region: us-east-2
-          family: arttracks-client-sv1
-          cluster-name: arttracks-client-cls
-          container-image-name-updates: container=arttracks-client-sv1,tag=latest
-
+      
 
           
