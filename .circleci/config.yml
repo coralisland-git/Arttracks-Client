@@ -11,7 +11,6 @@ workflows:
           account-url: 244157784000.dkr.ecr.us-east-2.amazonaws.com
           aws-access-key-id: AKIATRWHQD7APEUKBYOP
           aws-secret-access-key: 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
-          create-repo: true
           dockerfile: Dockerfile
           region: us-east-2
           repo: arttracks-client
