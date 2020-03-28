@@ -5,7 +5,7 @@ orbs:
   aws-ecs: circleci/aws-ecs@0.0.11
 
 workflows:
-  build_and_push_image:
+  build-and-deploy:
     jobs:
       - aws-ecr/build-and-push-image:
           account-url: 244157784000.dkr.ecr.us-east-2.amazonaws.com
@@ -15,6 +15,13 @@ workflows:
           region: us-east-2
           repo: arttracks-client
           tag: latest
-      
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          aws-region: us-east-2
+          family: arttracks-client-sv1
+          cluster-name: arttracks-client-cls
+          container-image-name-updates: container=arttracks-client-sv1,tag=latest
+
 
           
