@@ -5,19 +5,17 @@ MAINTAINER Leo Larkpor of ArtTracks
 
 WORKDIR /app
 
-COPY . /app
+COPY ./app /app
 
-WORKDIR /app/app
+# WORKDIR /app/app
 RUN npm install
 RUN npm install --global bower
 RUN bower install --allow-root
 
-EXPOSE 8080
-EXPOSE 8079
+#EXPOSE 8080
+#EXPOSE 8079
 
 ENTRYPOINT ["npm"]
 
 #CMD ["run", "start"]
 CMD ["run", "prod", "-s"]
-
-

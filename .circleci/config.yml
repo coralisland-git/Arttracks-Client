@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@0.0.4
+  aws-ecr: circleci/aws-ecr@0.0.2
   aws-ecs: circleci/aws-ecs@0.0.11
 
 workflows:
@@ -18,8 +18,8 @@ workflows:
           requires:
             - aws-ecr/build-and-push-image
           aws-region: us-east-2
-          family: arttracks-client-sv1
+          family: arttracks-client-v1-task
           cluster-name: arttracks-client-cls
-          container-image-name-updates: container=arttracks-client-sv1
+          container-image-name-updates: container=arttracks-client-v1-container
 
           
