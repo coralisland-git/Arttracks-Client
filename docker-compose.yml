@@ -4,13 +4,19 @@ services:
 
   web:
 
+    image: webpack
+
     build: .
 
-    command: npm run start
+    command: run prod
 
     volumes:
-      - ./app/app:/app
+      - ./app:/app
+      - node_modules:/app/node_modules
 
     ports:
       - "8079:8079"
       - "8080:8080"
+
+volumes:
+  node_modules:
