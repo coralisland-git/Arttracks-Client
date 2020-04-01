@@ -1,25 +1,88 @@
 version: 2.1
-
 orbs:
-  aws-ecr: circleci/aws-ecr@0.0.2
-  aws-ecs: circleci/aws-ecs@0.0.11
-
+  aws-cli: circleci/aws-cli@0.1.4
+  aws-ecs: circleci/aws-ecs@0.0.10
+jobs:
+  build:  
+    docker:
+      - image: circleci/golang:1.8
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Setup common environment variables
+          command: |
+            echo 'export ECR_REPOSITORY_NAME="${AWS_RESOURCE_NAME_PREFIX}"' >> $BASH_ENV
+            echo 'export FULL_IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:${CIRCLE_SHA1}"' >> $BASH_ENV
+      - run:
+          name: Build image
+          command: |
+            docker build -t $FULL_IMAGE_NAME .
+      - run:
+          name: Test image
+          command: |
+            docker run -d -p 8080:8080 --name built-image $FULL_IMAGE_NAME
+            sleep 10
+            docker run --network container:built-image appropriate/curl --retry 10 --retry-connrefused http://localhost:8080 | grep "Hello World!"
+      - run:
+          name: Save image to an archive
+          command: |
+            mkdir docker-image
+            docker save -o docker-image/image.tar $FULL_IMAGE_NAME
+      - persist_to_workspace:
+          root: .
+          paths:
+            - docker-image
+  deploy:  
+    docker:
+      - image: circleci/python:3.6.1
+    environment:
+      AWS_DEFAULT_OUTPUT: json
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: workspace
+      - aws-cli/install
+      - aws-cli/configure:
+          aws-access-key-id: "$AWS_ACCESS_KEY_ID"
+          aws-region: "$AWS_DEFAULT_REGION"
+      - run:
+          name: Load image
+          command: |
+            docker load --input workspace/docker-image/image.tar
+      - run:
+          name: Setup common environment variables
+          command: |
+            echo 'export ECS_CLUSTER_NAME="${AWS_RESOURCE_NAME_PREFIX}-cls"' >> $BASH_ENV
+            echo 'export ECS_SERVICE_NAME="${AWS_RESOURCE_NAME_PREFIX}-v1-service"' >> $BASH_ENV
+            echo 'export ECS_CONTAINER_NAME="${AWS_RESOURCE_NAME_PREFIX}-v1-container"' >> $BASH_ENV
+            echo 'export FULL_IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_RESOURCE_NAME_PREFIX}:${CIRCLE_SHA1}"' >> $BASH_ENV
+      - run:
+          name: Push image
+          command: |
+            eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+            docker push $FULL_IMAGE_NAME
+      - aws-ecs/update-service:
+          family: "${ECS_SERVICE_NAME}"
+          cluster-name: "${ECS_CLUSTER_NAME}"
+          container-image-name-updates: "container=${ECS_CONTAINER_NAME},image-and-tag=${FULL_IMAGE_NAME}"
+          container-env-var-updates: "container=${ECS_CONTAINER_NAME},name=VERSION_INFO,value=${CIRCLE_SHA1}_${CIRCLE_BUILD_NUM},container=${ECS_CONTAINER_NAME},name=BUILD_DATE,value=\"$(date)\""
+          verify-revision-is-deployed: true
+      - run:
+          name: Test deployment (Please manually tear down AWS resources after use, if desired)
+          command: |
+            TARGET_GROUP_ARN=$(aws ecs describe-services --cluster $ECS_CLUSTER_NAME --services $ECS_SERVICE_NAME | jq -r '.services[0].loadBalancers[0].targetGroupArn')
+            ELB_ARN=$(aws elbv2 describe-target-groups --target-group-arns $TARGET_GROUP_ARN | jq -r '.TargetGroups[0].LoadBalancerArns[0]')
+            ELB_DNS_NAME=$(aws elbv2 describe-load-balancers --load-balancer-arns $ELB_ARN | jq -r '.LoadBalancers[0].DNSName')
+            # Test multiple times to verify that the new revision has been deployed across the entire cluster
+            for attempt in {1..50}; do
+              curl -s --retry 10 http://$ELB_DNS_NAME | grep -E "Hello World!.*${CIRCLE_SHA1}_${CIRCLE_BUILD_NUM}"
+            done
 workflows:
-  build_and_push_image:
+  build-deploy:
     jobs:
-      - aws-ecr/build-and-push-image:
-          account-url: 244157784000.dkr.ecr.us-east-2.amazonaws.com
-          aws-access-key-id: AKIATRWHQD7APEUKBYOP
-          aws-secret-access-key: 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
-          dockerfile: Dockerfile
-          region: us-east-2
-          repo: arttracks-client
-      - aws-ecs/deploy-service-update:
+      - build
+      - deploy:
           requires:
-            - aws-ecr/build-and-push-image
-          aws-region: us-east-2
-          family: arttracks-client-v1-task
-          cluster-name: arttracks-client-cls
-          container-image-name-updates: container=arttracks-client-v1-container
-
-          
+            - build
