@@ -4,8 +4,7 @@ orbs:
   aws-ecs: circleci/aws-ecs@0.0.10
 jobs:
   build-prod:
-    docker:
-      - dockerfile: ./Dockerfile_prod
+    docker:      
       - image: circleci/golang:1.8
     steps:
       - checkout
@@ -18,7 +17,7 @@ jobs:
       - run:
           name: Prod Build image
           command: |
-            docker build -t $FULL_IMAGE_NAME .
+            docker build -t $FULL_IMAGE_NAME -f Dockerfile_prod .
       - run:
           name: Prod Save image to an archive
           command: |
@@ -79,7 +78,7 @@ jobs:
       - run:
           name: Build image
           command: |
-            docker build -t $FULL_IMAGE_NAME .
+            docker build -t $FULL_IMAGE_NAME -f Dockerfile_dev .
       - run:
           name: Save image to an archive
           command: |
