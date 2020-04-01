@@ -64,8 +64,7 @@ jobs:
           verify-revision-is-deployed: true
 
   build-dev:
-    docker:
-      - dockerfile: ./Dockerfile_dev
+    docker:      
       - image: circleci/golang:1.8
     steps:
       - checkout
