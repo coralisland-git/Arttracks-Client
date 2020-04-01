@@ -145,7 +145,7 @@ workflows:
                 - master
       - deploy-dev:
           requires:
-            - build
+            - build-dev
           filters:
             branches:
               ignore:
