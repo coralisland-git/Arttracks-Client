@@ -4,9 +4,6 @@ orbs:
   aws-ecs: circleci/aws-ecs@0.0.10
 jobs:
   build-prod:
-    branches:
-      only:
-        - master        
     docker:
       - dockerfile: ./Dockerfile_prod
       - image: circleci/golang:1.8
@@ -32,9 +29,6 @@ jobs:
           paths:
             - docker-image
   deploy-prod:
-    branches:
-      only:
-        - master        
     docker:
       - image: circleci/python:3.6.1
     environment:
@@ -70,12 +64,9 @@ jobs:
           container-env-var-updates: "container=${ECS_SERVICE_NAME},name=VERSION_INFO,value=prod_${CIRCLE_BUILD_NUM},container=${ECS_SERVICE_NAME},name=BUILD_DATE,value=\"$(date)\""
           verify-revision-is-deployed: true
 
-  build:  
-    branches:
-      only:
-        - master        
+  build-dev:
     docker:
-      - dockerfile: ./Dockerfile
+      - dockerfile: ./Dockerfile_dev
       - image: circleci/golang:1.8
     steps:
       - checkout
@@ -84,7 +75,7 @@ jobs:
           name: Setup common environment variables
           command: |
             echo 'export ECR_REPOSITORY_NAME="${AWS_RESOURCE_NAME_PREFIX}"' >> $BASH_ENV
-            echo 'export FULL_IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:${CIRCLE_SHA1}"' >> $BASH_ENV
+            echo 'export FULL_IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:dev"' >> $BASH_ENV
       - run:
           name: Build image
           command: |
@@ -98,10 +89,7 @@ jobs:
           root: .
           paths:
             - docker-image
-  deploy:
-    branches:
-      only:
-        - master        
+  deploy-dev:
     docker:
       - image: circleci/python:3.6.1
     environment:
@@ -124,7 +112,7 @@ jobs:
           command: |
             echo 'export ECS_CLUSTER_NAME="${AWS_RESOURCE_NAME_PREFIX}-cls"' >> $BASH_ENV
             echo 'export ECS_SERVICE_NAME="${AWS_RESOURCE_NAME_PREFIX}-svc"' >> $BASH_ENV
-            echo 'export FULL_IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_RESOURCE_NAME_PREFIX}:${CIRCLE_SHA1}"' >> $BASH_ENV
+            echo 'export FULL_IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_RESOURCE_NAME_PREFIX}:dev"' >> $BASH_ENV
       - run:
           name: Push image
           command: |
@@ -134,17 +122,33 @@ jobs:
           family: "${ECS_SERVICE_NAME}"
           cluster-name: "${ECS_CLUSTER_NAME}"
           container-image-name-updates: "container=${ECS_SERVICE_NAME},image-and-tag=${FULL_IMAGE_NAME}"
-          container-env-var-updates: "container=${ECS_SERVICE_NAME},name=VERSION_INFO,value=${CIRCLE_SHA1}_${CIRCLE_BUILD_NUM},container=${ECS_SERVICE_NAME},name=BUILD_DATE,value=\"$(date)\""
+          container-env-var-updates: "container=${ECS_SERVICE_NAME},name=VERSION_INFO,value=dev_${CIRCLE_BUILD_NUM},container=${ECS_SERVICE_NAME},name=BUILD_DATE,value=\"$(date)\""
           verify-revision-is-deployed: true
 
 workflows:
   build-deploy:
     jobs:
-      - build-prod
+      - build-prod:
+          filters:
+            branches:
+              only:
+                - master
       - deploy-prod:
           requires:
             - build-prod
-      - build
-      - deploy:
+          filters:
+            branches:
+              only:
+                - master
+      - build-dev:
+          filters:
+            branches:
+              ignore:
+                - master
+      - deploy-dev:
           requires:
             - build
+          filters:
+            branches:
+              ignore:
+                - master
