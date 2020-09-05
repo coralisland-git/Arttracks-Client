@@ -60,7 +60,7 @@
     "loader-utils": "^0.2.15",
     "mocha": "^2.5.3",
     "ncp": "^2.0.0",
-    "node-sass": "^3.13.1",
+    "node-sass": "^4.13.1",
     "npm-run-all": "^2.2.0",
     "npm-watch": "^0.1.4",
     "null-loader": "^0.1.1",
