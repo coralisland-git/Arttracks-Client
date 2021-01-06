@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "@sketchpixy/rubix": "^2.9.16",
-    "axios": "^0.13.1",
+    "axios": "^0.21.1",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
