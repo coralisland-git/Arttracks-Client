@@ -98,7 +98,7 @@
     "easy-countries-list": "^1.1.0",
     "es6-promise": "^3.2.1",
     "express": "^4.14.0",
-    "fabric": "^1.7.19",
+    "fabric": "^5.2.4",
     "filepicker-js": "^2.4.17",
     "filesize": "^3.3.0",
     "filestack-js": "^0.11.4",
