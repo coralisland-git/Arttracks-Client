@@ -57,7 +57,7 @@
     "isomorphic-style-loader": "^1.0.0",
     "json-loader": "^0.5.4",
     "just-wait": "^1.0.5",
-    "loader-utils": "^0.2.15",
+    "loader-utils": "^1.4.1",
     "mocha": "^2.5.3",
     "ncp": "^2.0.0",
     "node-sass": "^3.13.1",
