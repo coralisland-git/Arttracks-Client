@@ -58,7 +58,7 @@
     "json-loader": "^0.5.4",
     "just-wait": "^1.0.5",
     "loader-utils": "^0.2.15",
-    "mocha": "^2.5.3",
+    "mocha": "^10.1.0",
     "ncp": "^2.0.0",
     "node-sass": "^3.13.1",
     "npm-run-all": "^2.2.0",
