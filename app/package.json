@@ -97,7 +97,7 @@
     "downloadjs": "^1.4.6",
     "easy-countries-list": "^1.1.0",
     "es6-promise": "^3.2.1",
-    "express": "^4.14.0",
+    "express": "^4.17.3",
     "fabric": "^1.7.19",
     "filepicker-js": "^2.4.17",
     "filesize": "^3.3.0",
